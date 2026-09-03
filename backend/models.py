@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Integer, Numeric, String, UniqueConstraint
+from sqlalchemy import Column, DateTime, Index, Integer, Numeric, String, UniqueConstraint
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -18,4 +18,6 @@ class Forecast(Base):
             "city", "target_time", "ingested_at",
             name="uq_forecasts_city_target_time_ingested_at",
         ),
+        Index("ix_forecasts_city_ingested_at", "city", "ingested_at"),
+        Index("ix_forecasts_city_target_time", "city", "target_time"),
     )
