@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Select,
@@ -104,61 +104,77 @@ export default function Home() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {forecast.map((entry) => (
-              <TableRow
-                key={entry.target_time}
-                onClick={() => setSelectedHour(entry)}
-                className="cursor-pointer"
-              >
-                <TableCell>
-                  {new Date(entry.target_time).toLocaleString("nl-BE")}
-                </TableCell>
-                <TableCell>{entry.temperature_c}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
-
-      {selectedHour && (
-        <div className="flex flex-col gap-3 rounded-lg border p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-medium">
-              History for{" "}
-              {new Date(selectedHour.target_time).toLocaleString("nl-BE")}
-            </h2>
-            <button
-              onClick={() => setSelectedHour(null)}
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Close
-            </button>
-          </div>
-
-          {historyLoading && <p>Loading...</p>}
-          {historyError && <p>Something went wrong: {historyError}</p>}
-
-          {!historyLoading && !historyError && (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Ingested at</TableHead>
-                  <TableHead>Temperature (°C)</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {history.map((entry) => (
-                  <TableRow key={entry.ingested_at}>
+            {forecast.map((entry) => {
+              const isSelected = selectedHour?.target_time === entry.target_time;
+              return (
+                <React.Fragment key={entry.target_time}>
+                  <TableRow
+                    onClick={() => setSelectedHour(entry)}
+                    className={`cursor-pointer ${isSelected ? "bg-muted" : ""}`}
+                  >
                     <TableCell>
-                      {new Date(entry.ingested_at).toLocaleString("nl-BE")}
+                      {new Date(entry.target_time).toLocaleString("nl-BE")}
                     </TableCell>
                     <TableCell>{entry.temperature_c}</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </div>
+
+                  {isSelected && (
+                    <TableRow>
+                      <TableCell colSpan={2} className="bg-muted/50 p-4">
+                        <div className="flex flex-col gap-3">
+                          <div className="flex items-center justify-between">
+                            <h2 className="font-medium">
+                              History for{" "}
+                              {new Date(entry.target_time).toLocaleString(
+                                "nl-BE"
+                              )}
+                            </h2>
+                            <button
+                              onClick={() => setSelectedHour(null)}
+                              className="text-sm text-muted-foreground hover:underline"
+                            >
+                              Close
+                            </button>
+                          </div>
+
+                          {historyLoading && <p>Loading...</p>}
+                          {historyError && (
+                            <p>Something went wrong: {historyError}</p>
+                          )}
+
+                          {!historyLoading && !historyError && (
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Ingested at</TableHead>
+                                  <TableHead>Temperature (°C)</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {history.map((historyEntry) => (
+                                  <TableRow key={historyEntry.ingested_at}>
+                                    <TableCell>
+                                      {new Date(
+                                        historyEntry.ingested_at
+                                      ).toLocaleString("nl-BE")}
+                                    </TableCell>
+                                    <TableCell>
+                                      {historyEntry.temperature_c}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </TableBody>
+        </Table>
       )}
     </div>
   );
