@@ -21,11 +21,14 @@ everything runs inside containers.
 
 **1. Clone the repository and move into it:**
 ```bash
-git clone <this-repo-url>
-cd <repo-folder-name>
+git clone https://github.com/DogukanUyanik/ella-weather-case.git
+cd ella-weather-case
 ```
-All commands below assume you are in this directory — the same one
-that contains `docker-compose.yml`.
+`git clone` creates a new folder named after the repository
+(`ella-weather-case`) inside whatever directory you ran the command
+from — it does not move you into it automatically, so the `cd` step
+above is required. All commands below assume you are inside this
+folder — the same one that contains `docker-compose.yml`.
 
 **2. Start everything:**
 ```bash
