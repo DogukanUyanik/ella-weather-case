@@ -16,3 +16,4 @@ node_modules/
 # OS / editor
 .DS_Store
 .vscode/
+frontend/CLAUDE.md
