@@ -81,6 +81,19 @@ this project and stop them with `docker stop <container-id>`), or
 identify and stop whatever process is bound to the port on the host,
 then retry `docker compose up --build`.
 
+## Using the dashboard
+ 
+- The dropdown at the top selects a city; the table below shows its
+  latest forecast, one row per hour.
+- **Click any row** to see how the forecast for that specific hour has
+  changed across ingestion runs — a small history panel opens directly
+  below the clicked row, listing every past revision (when it was
+  ingested, and what temperature was predicted at that time) ordered
+  oldest to newest. Click "Close" to dismiss it.
+- Since this reflects real revisions, rows will show more history the
+  more ingestion runs have happened — run `docker compose run ingest`
+  (see above) to add another one and see a new entry appear.
+
 ## Architecture
 
 Three independently deployable components:
